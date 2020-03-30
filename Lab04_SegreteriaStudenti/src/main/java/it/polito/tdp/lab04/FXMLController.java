@@ -4,9 +4,12 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Model;
+import it.polito.tdp.lab04.model.Studente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -26,7 +29,7 @@ public class FXMLController {
     private URL location;
 
     @FXML
-    private ChoiceBox<Corso> choiceBox;
+    private ChoiceBox<String> choiceBox;
 
     @FXML
     private Button btnCercaIscrittiCorso;
@@ -57,6 +60,10 @@ public class FXMLController {
 
     @FXML
     void CancellaTuttiCampi(ActionEvent event) {
+    	this.txtCognome.clear();
+    	this.txtMatricola.clear();
+    	this.txtNome.clear();
+    	this.txtResult.clear();
     
     
 
@@ -69,28 +76,40 @@ public class FXMLController {
 
     @FXML
     void handleCercaIscrittiCorso(ActionEvent event) {
-    	
- 
+    String nomeCorso = 	choiceBox.getValue();
+    Corso c = this.model.getTuttiCorsi().stream().filter(s-> s.getCorso().equals(nomeCorso)).findFirst().get();
+
+ for(Studente s :  this.model.getStudentiPerCorso(c))
+ {
+	 txtResult.appendText(s.toString());
+ }
 
 
     }
 
     
     void handleChooseCorso() {
-    	List <Corso> list = model.getTuttiCorsi();
-    	if(list == null)
+    	
+    	if( model.getTuttiCorsi() == null)
     	{
     		System.out.print("Errore inserimento corsi\n");
     		return;
     	}
+    	List<String> list = model.getTuttiCorsi().stream().map(s -> s.getCorso()).collect(Collectors.toList());
+    	
     	//Corso vuoto = new Corso();
-    	list.add(null);
+    	list.add(" ");
     	this.choiceBox.getItems().addAll(list);
     	
     }
 
     @FXML
     void handleCompletamentoAutomatico(ActionEvent event) {
+    	String matricola = this.txtMatricola.getText();
+    Studente s  =	model.getStudenteMatricola(matricola);
+    	this.txtNome.setText(s.getNome());
+    	this.txtCognome.setText(s.getCognome());
+    	
 
     }
 
