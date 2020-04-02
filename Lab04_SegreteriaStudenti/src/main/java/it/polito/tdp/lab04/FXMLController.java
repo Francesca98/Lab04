@@ -18,6 +18,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
+// il fatto che non si scelga nessun corso nello specifico vuol dire che bisogna stamparli tutti o inviare un messaggio di errore?
+// a cosa serve il metodo getcorso
 public class FXMLController {
 	
 	Model model;
@@ -29,7 +31,7 @@ public class FXMLController {
     private URL location;
 
     @FXML
-    private ChoiceBox<String> choiceBox;
+    private ChoiceBox<Corso> choiceBox;
 
     @FXML
     private Button btnCercaIscrittiCorso;
@@ -71,14 +73,51 @@ public class FXMLController {
 
     @FXML
     void handleCercaCorsi(ActionEvent event) {
+    	
+    	String matricola = this.txtMatricola.getText();
+    	
+    	if(matricola.contentEquals(""))
+    	{
+    		  txtResult.setText("Inserire la matricola di  uno studente\n");
+    	        return;
+    	} //parola.matches("[a-zA-Z]*")
+    	if(!matricola.matches("[0-9]*")) 
+    	{
+    		 txtResult.setText("Caratteri in matricola non consentiti\n");
+ 	        return;
+    	}
+
+        Studente s =	this.model.getStudenteMatricola(matricola);
+        if(s == null)
+        {
+        txtResult.setText("Studente non presente nel db\n");
+        return;
+        }
+  
+   List<Corso> corsi = this.model.getCorsiPerStudente(s);
+   for(Corso c : corsi)
+   {
+	   txtResult.appendText(c.toStringTot());
+   }
+    	
 
     }
 
     @FXML
     void handleCercaIscrittiCorso(ActionEvent event) {
-    String nomeCorso = 	choiceBox.getValue();
-    Corso c = this.model.getTuttiCorsi().stream().filter(s-> s.getCorso().equals(nomeCorso)).findFirst().get();
+    String nomeCorso = 	choiceBox.getValue().getCorso();
+    if(nomeCorso==null)
+    {
+    	txtResult.setText("Selezionare un corso!\n");
+        return;
+    }
 
+    if(nomeCorso.equals(""))
+    {
+    	txtResult.setText("Selezionare un corso specifico!\n");
+        return;
+    }
+    Corso c = this.choiceBox.getValue();
  for(Studente s :  this.model.getStudentiPerCorso(c))
  {
 	 txtResult.appendText(s.toString());
@@ -95,18 +134,35 @@ public class FXMLController {
     		System.out.print("Errore inserimento corsi\n");
     		return;
     	}
-    	List<String> list = model.getTuttiCorsi().stream().map(s -> s.getCorso()).collect(Collectors.toList());
-    	
-    	//Corso vuoto = new Corso();
-    	list.add(" ");
+    	List<Corso> list = model.getTuttiCorsi();
+    	Corso vuoto = new Corso();
+    	list.add(vuoto);
     	this.choiceBox.getItems().addAll(list);
     	
     }
 
     @FXML
     void handleCompletamentoAutomatico(ActionEvent event) {
+    	
+    	
     	String matricola = this.txtMatricola.getText();
-    Studente s  =	model.getStudenteMatricola(matricola);
+    	if(matricola.contentEquals(""))
+    	{
+    		  txtResult.setText("Inserire la matricola di  uno studente\n");
+    	        return;
+    	}
+    	if(!matricola.matches("[0-9]*")) 
+    	{
+    		 txtResult.setText("Caratteri in matricola non consentiti\n");
+ 	        return;
+    	}
+        Studente s =	this.model.getStudenteMatricola(matricola);
+        if(s == null)
+        {
+        txtResult.setText("Studente non presente nel db\n");
+        return;
+        }
+ 
     	this.txtNome.setText(s.getNome());
     	this.txtCognome.setText(s.getCognome());
     	
@@ -115,7 +171,45 @@ public class FXMLController {
 
     @FXML
     void handleIscritti(ActionEvent event) {
+    	String matricola = this.txtMatricola.getText();
+    	if(matricola.contentEquals(""))
+    	{
+    		  txtResult.setText("Selezionare uno studente\n");
+    	        return;
+    	}
+    	if(!matricola.matches("[0-9]*")) 
+    	{
+    		 txtResult.setText("Caratteri in matricola non consentiti\n");
+ 	        return;
+    	}
+        Studente s =	this.model.getStudenteMatricola(matricola);
+        if(s == null)
+        {
+        txtResult.setText("Studente non presente nel db\n");
+        return;
+        }
+        
+        String nomeCorso = 	choiceBox.getValue().getCorso();
+       
+        if(nomeCorso.equals(""))
+        {
+        	txtResult.setText("Selezionare un corso!\n");
+            return;
+        }
+        Corso c = this.model.getTuttiCorsi().stream().filter(ss-> ss.getCorso().equals(nomeCorso)).findFirst().get();
+        
+       if( this.model.getCorsiPerStudente(s).contains(c))
+       {
+    	   txtResult.setText("Studente già iscritto al corso\n");
+    	   return;
+       }
+       else
+       {	 //iscrivi studente al corso
+    	   
+       }
 
+       
+       
     }
 
     @FXML

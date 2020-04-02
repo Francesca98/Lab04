@@ -1,10 +1,14 @@
 package it.polito.tdp.lab04.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Corso {
 	private String codice;
 	private int crediti ;
 	private String corso;
 	private int periodo ;
+	private List <Studente> studenti = new LinkedList<>();
 	
 	
 	public Corso(String codice, int crediti, String corso, int periodo) {
@@ -18,7 +22,11 @@ public class Corso {
 	public Corso() {
 
 	}
-	
+	public void addStudente(Studente s )
+
+	{
+		this.studenti.add(s);
+	}
 
 	public String getCodice() {
 		return codice;
@@ -87,7 +95,19 @@ public class Corso {
 
 	@Override
 	public String toString() {
-		return "Corso : " + codice + ", " + crediti + ", " + corso + ", " + periodo + "\n";
+		return  corso + "\n";
+	}
+
+	public String toStringTot() {
+		return  codice + ", " + crediti + ", " + corso + ", " + periodo + "\n";
+	}
+
+	public List<Studente> getStudenti() {
+		return studenti;
+	}
+
+	public void setStudenti(List<Studente> studenti) {
+		this.studenti = studenti;
 	}
 
 }

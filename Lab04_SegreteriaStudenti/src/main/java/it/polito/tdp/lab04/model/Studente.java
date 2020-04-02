@@ -1,14 +1,17 @@
 package it.polito.tdp.lab04.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Studente {
 	private String nome ;
 	private String cognome;
 	private String  matricola;
 	
+	
 	public Studente() {
 	
 	}
-	
 	
 	public String getMatricola() {
 		return matricola;
@@ -61,7 +64,9 @@ public class Studente {
 
 	@Override
 	public String toString() {
-		return  nome + " " + cognome + " " + matricola + "\n";
+		return  String.format("%-10s ", nome)+ " " +  String.format("%-10s ",cognome) + " " +  String.format("%-10s ", matricola) + "\n";
 	}
+
+
 
 }

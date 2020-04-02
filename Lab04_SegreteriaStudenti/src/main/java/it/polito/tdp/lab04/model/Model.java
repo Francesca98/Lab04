@@ -21,6 +21,12 @@ public class Model {
 		return  this.cdao.getTuttiICorsi();
 	
 	}
+	
+	public List<Corso> getCorsiPerStudente(Studente s)
+	{
+		return  this.sdao.getTuttiICorsiPerStudente(s);
+	
+	}
 	public List<Studente> getStudentiPerCorso(Corso corso)
 	{
 		return  this.cdao.getStudentiIscrittiAlCorso(corso);

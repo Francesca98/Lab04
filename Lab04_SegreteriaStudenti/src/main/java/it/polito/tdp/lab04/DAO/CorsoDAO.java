@@ -11,10 +11,7 @@ import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Studente;
 
 public class CorsoDAO {
-	
-	/*
-	 * Ottengo tutti i corsi salvati nel Db
-	 */
+
 	public List<Corso> getTuttiICorsi() {
 
 		final String sql = "SELECT * FROM corso";
@@ -55,16 +52,50 @@ public class CorsoDAO {
 	}
 	
 	
-	/*
-	 * Dato un codice insegnamento, ottengo il corso
-	 */
-	public void getCorso(Corso corso) {
-		// TODO
-	}
+	
+	public Corso  getCorsoByCod(Corso corso) {
 
-	/*
-	 * Ottengo tutti gli studenti iscritti al Corso
-	 */
+		final String sql = "SELECT * FROM  corso where codins = ? ";
+
+		Corso c = null;
+
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+              st.setString(1, corso.getCodice());
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+
+				String nome = rs.getString("nome");
+				 int periodo = rs.getInt("pd");
+			
+				 int crediti = rs.getInt("crediti");
+			
+		
+				
+
+
+				 c = new Corso(corso.getCodice(), crediti, nome, periodo);
+				
+			}
+
+			conn.close();
+			
+			return  c;
+			
+
+		} catch (SQLException e) {
+			// e.printStackTrace();
+			throw new RuntimeException("Errore Db", e);
+		}
+	}
+	
+	
+	
+	
+	
+	
 	public List<Studente> getStudentiIscrittiAlCorso(Corso corso) {
 		List<Studente> stud = new LinkedList<>();
 		String sql = "select *" + 
@@ -97,6 +128,7 @@ st.setString(1, corso.getCorso());
 			}
 
 			conn.close();
+	
 			
 			return stud;
 			
@@ -110,10 +142,32 @@ st.setString(1, corso.getCorso());
 	/*
 	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.
 	 */
-	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
-		// TODO
-		// ritorna true se l'iscrizione e' avvenuta con successo
-		return false;
-	}
+//	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
+//		String sql = ;
+//		
+//		
+//		try {
+//			Connection conn = ConnectDB.getConnection();
+//			PreparedStatement st = conn.prepareStatement(sql);
+//
+//			ResultSet rs = st.executeQuery();
+//
+//			while (rs.next()) {
+//
+//			}
+//
+//			conn.close();
+//	
+//			
+//			return stud;
+//			
+//
+//		} catch (SQLException e) {
+//			// e.printStackTrace();
+//			throw new RuntimeException("Errore Db", e);
+//		}
+//
+//		return false;
+//	}
 
 }

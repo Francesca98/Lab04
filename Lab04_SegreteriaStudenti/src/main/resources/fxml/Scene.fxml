@@ -6,9 +6,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.lab04.FXMLController">
    <top>
@@ -43,7 +47,17 @@
                <children>
                   <Label text="Studente :" />
                   <TextField fx:id="txtMatricola" />
-                  <Button fx:id="btnCompletamentoAutomatico" mnemonicParsing="false" onAction="#handleCompletamentoAutomatico" text="COMPLETAMENTO AUTOMATICO" />
+                  <Button fx:id="btnCompletamentoAutomatico" mnemonicParsing="false" onAction="#handleCompletamentoAutomatico" style="-fx-background-color: green;" text="V">
+                     <effect>
+                        <Lighting>
+                           <bumpInput>
+                              <Shadow />
+                           </bumpInput>
+                           <light>
+                              <Light.Distant color="#1bff06" />
+                           </light>
+                        </Lighting>
+                     </effect></Button>
                   <TextField fx:id="txtNome" editable="false" />
                   <TextField fx:id="txtCognome" editable="false" />
                </children>
@@ -74,6 +88,9 @@
                <padding>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </padding>
+               <font>
+                  <Font name="Courier Bold" size="15.0" />
+               </font>
             </TextArea>
             <Button fx:id="btnReset" mnemonicParsing="false" onAction="#CancellaTuttiCampi" text="Reset">
                <VBox.margin>

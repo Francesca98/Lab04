@@ -6,9 +6,14 @@ public class TestModel {
 
 		Model model = new Model();
 		
-		/*
-		 * 	Write here your test model
-		 */
+	String s = "1546638sertrytuyi8";
+	if(s.matches("[a-zA-Z_0-9]*"))
+	{
+		System.out.print("it's ok\n");
+	}
+	else
+	System.out.print("NO");
+	
 
 	}
 
